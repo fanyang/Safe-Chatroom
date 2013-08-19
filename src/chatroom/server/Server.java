@@ -19,7 +19,8 @@ public class Server extends Thread{
 	            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));  
 	            PrintWriter writer = new PrintWriter(socket.getOutputStream());  
 	  
-	            String data = reader.readLine();  
+	            String data = reader.readLine();
+	            System.out.println(data);
 	            writer.println(data);  
 	            writer.close();  
 	            socket.close();  
@@ -29,7 +30,7 @@ public class Server extends Thread{
 	    }  
 	  
 	    private static String SERVER_KEY_STORE = "keystore/server_ks";  
-	    private static String SERVER_KEY_STORE_PASSWORD = "123123";  
+	    private static String SERVER_KEY_PASSWORD = "def456";  
 	  
 	    public static void main(String[] args) throws Exception {
 	        System.setProperty("javax.net.ssl.trustStore", SERVER_KEY_STORE);  
@@ -38,7 +39,7 @@ public class Server extends Thread{
 	        KeyStore ks = KeyStore.getInstance("jceks");  
 	        ks.load(new FileInputStream(SERVER_KEY_STORE), null);  
 	        KeyManagerFactory kf = KeyManagerFactory.getInstance("SunX509");  
-	        kf.init(ks, SERVER_KEY_STORE_PASSWORD.toCharArray());  
+	        kf.init(ks, SERVER_KEY_PASSWORD.toCharArray());  
 	          
 	        context.init(kf.getKeyManagers(), null, null);  
 	  
