@@ -1,50 +1,45 @@
 package chatroom.util;
 
-import java.io.StringReader;
-
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import org.junit.Before;
-import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.*;
 
 public class XMLUtilTest
 {
-	private SAXReader saxReader;
 	
 	@Before
-	public void setUp()
-	{
-		saxReader = new SAXReader();
+	public void setUp() {
+	}
+	
+	
+	@Test
+	public void testConstructLoginXML() {
+		
+		String username = "Alice";
+		String xml = XMLUtil.constructLoginXML(username);
+		
+		String extractedUsername = XMLUtil.extractUsername(xml);
+		
+		assertThat(extractedUsername, is(username));
+		
 	}
 	
 	@Test
-	public void testConstructLoginXML()
-	{
-		try
-		{
-			String xml = XMLUtil.constructLoginXML("Alice");
-			
-			Document document = saxReader.read(new StringReader(xml));
-			
-			Element root = document.getRootElement();
-			
-			String rootName = root.getName();
-			
-			Element typeElement = root.element("type");
-			Element userElement = root.element("user");
-			
-			assertThat(rootName, is("message"));
-			assertThat(typeElement.getText(), is("1"));
-			assertThat(userElement.getText(), is("Alice"));
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			fail();
-		}
+	public void testExtractType() {
+		
+		List<String> users = new ArrayList<String>();
+		users.add("Alice");
+		users.add("Bob");
+		
+		String xml = XMLUtil.constructUserList(users);
+		MessageType messageType = XMLUtil.extractType(xml);
+		
+		assertThat(messageType, is(MessageType.USER_LIST));
+		
 	}
 }

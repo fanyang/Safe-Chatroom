@@ -1,10 +1,9 @@
 package chatroom.server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
+
+import chatroom.util.XMLUtil;
 
 
 /**
@@ -15,17 +14,20 @@ import java.net.Socket;
 public class ClientHandler extends Thread {
 	
 	private Socket socket;
-	private Server server;
+	private MessageHandler messageHandler;
+	private String username;
 
 	
 	/**
 	 * Create a new client handler
+	 * @param messageHandler 
 	 * @param clientHandlerSocket
 	 */
-	public ClientHandler(Socket socket, Server server) {
+	public ClientHandler(Socket socket, MessageHandler messageHandler) {
 		
 		this.socket = socket;
-		this.server = server;
+		this.messageHandler = messageHandler;
+		
 		
 	}
 	
@@ -37,22 +39,49 @@ public class ClientHandler extends Thread {
 	public void run() {
 		
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			InputStream is = socket.getInputStream();
+			
+			byte[] buf = new byte[5000];
+			int length = is.read(buf);
+			
+			String loginXML = new String(buf, 0, length); 
+			
+			username = XMLUtil.extractUsername(loginXML);
+			messageHandler.addClientHandler(this);
 			
 			while (true) {
-				String str = br.readLine();
-				this.server.setText(str);
+//				length = is.read(buf);
+//				String message1 = new String(buf, 0, length);
+				length = is.read(buf);
+				String message2 = new String(buf, 0, length);
 				
-				PrintWriter pw = new PrintWriter(socket.getOutputStream());
-				pw.println(str);
-				pw.flush();
+				String message = message2;
+				messageHandler.addMessage(message);
 			}
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			this.messageHandler.removeClientHandler(this);
+			System.out.println("User logout!");;
 		}
 
 		
+	}
+
+
+	public void sendMessage(String message) {
+		
+		try {
+			OutputStream os = socket.getOutputStream();
+			os.write(message.getBytes());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public String getUsername() {
+		return username;
 	}
 	
 

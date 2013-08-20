@@ -1,7 +1,8 @@
 package chatroom.server;
 
 import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.KeyStore;
@@ -10,59 +11,53 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
-import javax.swing.JOptionPane;
+import javax.net.ssl.SSLSocket;
 
+public class TestSSLServer {
 
+	public static void main(String[] args) throws Exception {
 
-/**
- * This class must be a thread otherwise the UI will be hold.
- * @author think
- *
- */
-public class ServerConnection extends Thread {
-	
-	private Server server;
-	private int port;
-	
-	
-	public ServerConnection(Server server, int port) {
-		this.server = server;
-		this.port = port;
-	}
-
-	
-	@Override
-	public void run() {
-		ServerSocket serverSocket;
+		TestSSLServer testSSLServer = new TestSSLServer();
+		ServerSocket ss = testSSLServer.createSecureServerSocket(8443);
+		SSLSocket socket = (SSLSocket)(ss.accept());
 		
-		try	{
-			serverSocket = createSecureServerSocket(this.port);
-			this.server.setRunningState();
-		} catch(Exception ex) {
-			ex.printStackTrace();
-			JOptionPane.showMessageDialog(this.server, "Port already in use!", "ERROR", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
+		OutputStream os = socket.getOutputStream();
+		InputStream is = socket.getInputStream();
+		byte[] buf = new byte[5000];
 		
-		MessageHandler messageHandler = new MessageHandler(this.server);
-		messageHandler.start();
-
-		while (true) {
-			try {
-				Socket socket = serverSocket.accept();
-				new ClientHandler(socket, messageHandler).start();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		int length = is.read(buf);
+		String msg = new String(buf, 0, length);
+		System.out.println("c1 " + msg);
+		
+		
+		length = is.read(buf);
+		msg = new String(buf, 0, length);
+		System.out.println("c2 " + msg);
+		
+		
+		length = is.read(buf);
+		msg = new String(buf, 0, length);
+		System.out.println("c3 " + msg);
+		length = is.read(buf);
+		msg = new String(buf, 0, length);
+		System.out.println("c4 " + msg);
+		length = is.read(buf);
+		msg = new String(buf, 0, length);
+		System.out.println("c5 " + msg);
+		length = is.read(buf);
+		msg = new String(buf, 0, length);
+		System.out.println("c6 " + msg);
+		
+		
+		
 	}
-	
 	
 	private ServerSocket createSecureServerSocket(int port) throws Exception{
 		 String SERVER_KEY_STORE = "keystore/server_ks";  
 		 String SERVER_KEY_PASSWORD = "def456";
 		 
 		 System.setProperty("javax.net.ssl.trustStore", SERVER_KEY_STORE);
+		 System.setProperty("javax.net.debug", "ssl,handshake");  //for debug
 	     SSLContext context = SSLContext.getInstance("TLS");
 	          
 	     KeyStore ks = KeyStore.getInstance("jceks");  
@@ -78,20 +73,5 @@ public class ServerConnection extends Thread {
 	     return serverSocket;
 		
 	}
-	
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

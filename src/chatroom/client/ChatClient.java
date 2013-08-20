@@ -2,6 +2,7 @@ package chatroom.client;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -76,6 +77,7 @@ public class ChatClient extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				clientConnection.sendMessage(jTextField.getText());
 				jTextField.setText("");
+				jTextField.requestFocusInWindow();
 			}
 		});
 
@@ -85,6 +87,24 @@ public class ChatClient extends JFrame {
 
 		this.pack();
 		this.setVisible(true);
+		jTextField.requestFocusInWindow();
+	}
+
+
+	public void addMessage(String message) {
+		jTextArea1.append(message + "\n");
+	}
+
+
+	public void updateUserList(List<String> userList) {
+		
+		String users = "";
+		
+		for (String user : userList) {
+			users += user + "\n";
+		}
+		
+		jTextArea2.setText(users);
 	}
 
 	
