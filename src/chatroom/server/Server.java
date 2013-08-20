@@ -33,15 +33,13 @@ public class Server extends JFrame {
 	 * 
 	 * @param name server title
 	 */
-	public Server(String title)
-	{
+	public Server(String title)	{
 		super(title);
 		this.initComponents(); //initialize UI
 	}
 	
 
-	private void initComponents()
-	{
+	private void initComponents() {
 		jPanel1 = new JPanel();
 		jPanel2 = new JPanel();
 		
@@ -67,10 +65,8 @@ public class Server extends JFrame {
 		jButton.setText("Start");
 		jButton.addActionListener(new ActionListener() {
 			
-			public void actionPerformed(ActionEvent event)
-			{
-				int port = Integer.parseInt(Server.this.jTextField.getText());
-				
+			public void actionPerformed(ActionEvent event) {
+				int port = Integer.parseInt(jTextField.getText().trim());
 				new ServerConnection(Server.this, port).start();
 			}
 			
@@ -110,22 +106,9 @@ public class Server extends JFrame {
 	}
 
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		new Server("Server");
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	

@@ -38,7 +38,16 @@ public class ClientHandler extends Thread {
 		
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			this.server.setText(br.readLine());
+			
+			while (true) {
+				String str = br.readLine();
+				this.server.setText(str);
+				
+				PrintWriter pw = new PrintWriter(socket.getOutputStream());
+				pw.println(str);
+				pw.flush();
+			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

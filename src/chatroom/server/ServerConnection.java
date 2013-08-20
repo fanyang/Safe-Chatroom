@@ -19,13 +19,13 @@ import javax.swing.JOptionPane;
  * @author think
  *
  */
-public class ServerConnection extends Thread{
+public class ServerConnection extends Thread {
 	
 	private Server server;
 	private int port;
 	
 	
-	public ServerConnection(Server server, int port){
+	public ServerConnection(Server server, int port) {
 		this.server = server;
 		this.port = port;
 	}
@@ -43,7 +43,6 @@ public class ServerConnection extends Thread{
 			JOptionPane.showMessageDialog(this.server, "Port already in use!", "ERROR", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		
 
 		while (true) {
 			try {
@@ -52,12 +51,11 @@ public class ServerConnection extends Thread{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
 		}
 	}
 	
 	
-	public ServerSocket createSecureServerSocket(int port) throws Exception{
+	private ServerSocket createSecureServerSocket(int port) throws Exception{
 		 String SERVER_KEY_STORE = "keystore/server_ks";  
 		 String SERVER_KEY_PASSWORD = "def456";
 		 
@@ -78,6 +76,7 @@ public class ServerConnection extends Thread{
 	     return serverSocket;
 		
 	}
+	
 }
 
 
