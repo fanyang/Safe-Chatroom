@@ -1,21 +1,15 @@
 package chatroom.util;
 
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
+import org.dom4j.*;
 import org.dom4j.io.SAXReader;
 
 /**
  * login : 1
- * client message : 2
- * server message : 3
- * user list: 4
+ * user list: 2
+ * user message : 3
  *
  */
 
@@ -142,67 +136,49 @@ public class XMLUtil {
 	
 	/**
 	 * 
-	 * ����ͻ�����������˷��͵��������xml
+	 * Construct user message.
 	 * 
 	 * @param username
 	 * @param message
 	 * @return
 	 */
-	public static String constructMessageXML(String username, String message)
-	{
+	public static String constructMessageXML(String username, String message) {
 		Document document = constructDocument();
 		Element root = document.getRootElement();
 		
 		Element type = root.addElement("type");
-		type.setText("2");
+		type.setText(MessageType.USER_MESSAGE.name());
 		
-		Element user = root.addElement("user");
+		Element body = root.addElement("body");
+		
+		Element user = body.addElement("user");
 		user.setText(username);
 		
-		Element content = root.addElement("content");
+		Element content = body.addElement("content");
 		content.setText(message);
 		
 		return document.asXML();
 	}
 	
-	/**
-	 * ����������������пͻ��˷��͵�XML�������
-	 * 
-	 */
-	public static String constructServerMessageXML(String message)
-	{
-		Document document = constructDocument();
-		Element root = document.getRootElement();
-		
-		Element type = root.addElement("type");
-		type.setText("3");
-		
-		Element content = root.addElement("content");
-		content.setText(message);
-		
-		return document.asXML();
-	}
-	
-	
+
 	
 	
 	/**
-	 * �ӿͻ�����������˷��͵�XML��������н�������������
+	 * Extract user message
 	 */
-	public static String extractContent(String xml)
-	{
-		try
-		{
+	public static String extractContent(String xml) {
+		try {
 			SAXReader saxReader = new SAXReader();
 			
 			Document document = saxReader.read(new StringReader(xml));
 			
-			Element contentElement = document.getRootElement().element("content");
+			Element body = document.getRootElement().element("body");
 			
-			return contentElement.getText();
-		}
-		catch(Exception ex)
-		{
+			Element user = body.element("user");
+			Element content = body.element("content");
+			
+			return user.getText() + ": " + content.getText();
+		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
 		

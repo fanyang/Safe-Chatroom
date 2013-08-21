@@ -6,6 +6,9 @@ import java.util.List;
 
 import javax.swing.*;
 
+import chatroom.util.XMLUtil;
+
+@SuppressWarnings("serial")
 public class ChatClient extends JFrame {
 	
 	private JButton jButton1;
@@ -20,11 +23,13 @@ public class ChatClient extends JFrame {
 	private JTextField jTextField;
 	
 	private ClientConnection clientConnection;
+	private String name;
 	
 	
 	public ChatClient(String name, ClientConnection clientConnection){
 		
 		super(name);
+		this.name = name;
 		this.clientConnection = clientConnection;
 		initComponents();
 		
@@ -47,7 +52,7 @@ public class ChatClient extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		jPanel1.setBorder(BorderFactory.createTitledBorder("Messages"));
-		jPanel2.setBorder(BorderFactory.createTitledBorder("Users"));
+		jPanel2.setBorder(BorderFactory.createTitledBorder("Online Users"));
 		
 		jTextArea1.setColumns(30);
 		jTextArea1.setRows(25);
@@ -75,7 +80,16 @@ public class ChatClient extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				clientConnection.sendMessage(jTextField.getText());
+				String message = XMLUtil.constructMessageXML(name, jTextField.getText());
+				clientConnection.sendMessage(message);
+				jTextField.setText("");
+				jTextField.requestFocusInWindow();
+			}
+		});
+		jButton2.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				jTextField.setText("");
 				jTextField.requestFocusInWindow();
 			}

@@ -42,4 +42,18 @@ public class XMLUtilTest
 		assertThat(messageType, is(MessageType.USER_LIST));
 		
 	}
+	
+	@Test
+	public void testExtractUserMessage() {
+		
+		String user = "Alice";
+		String content = "Hello, I'm Alice.";
+		
+		String xml = XMLUtil.constructMessageXML(user, content);
+		String message = XMLUtil.extractContent(xml);
+		
+		assertThat(message, is("Alice: Hello, I'm Alice."));
+		
+	}
+	
 }

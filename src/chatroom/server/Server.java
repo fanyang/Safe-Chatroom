@@ -2,11 +2,11 @@ package chatroom.server;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.swing.*;
 
 
+@SuppressWarnings("serial")
 public class Server extends JFrame {
 	
 	private JLabel jLabel1;

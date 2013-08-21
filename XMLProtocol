@@ -8,28 +8,7 @@ type = 1 user login
 </message>
 
 
-type = 2 message from client to server
-<?xml version="1.0" encoding="utf-8"?>
-<message>
-	<type>CLIENT_MESSAGE</type>
-	<body>
-		<content>chat message</content>
-	</body>
-</message>
-
-
-type = 3 message rom server to client
-<?xml version="1.0" encoding="utf-8"?>
-<message>
-	<type>SERVER_MESSAGE</type>
-	<body>
-		<user>Alice</user>
-		<content>chat message</content>
-	</body>
-</message>
-
-
-type = 4 user list
+type = 2 user list
 <?xml version="1.0" encoding="utf-8"?>
 <message>
 	<type>USER_LIST</type>
@@ -39,5 +18,19 @@ type = 4 user list
 		<user>Carol</user>
 	</body>
 </message>
+
+
+type = 3 user message
+<?xml version="1.0" encoding="utf-8"?>
+<message>
+	<type>SERVER_MESSAGE</type>
+	<body>
+		<user>Alice</user>
+		<content>Hello, I'm Alice.</content>
+	</body>
+</message>
+
+
+
 
 

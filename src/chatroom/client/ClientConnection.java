@@ -1,12 +1,6 @@
 package chatroom.client;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.List;
 
@@ -51,30 +45,40 @@ public class ClientConnection extends Thread {
 		
 		try {
 			InputStream is = socket.getInputStream();
-			byte[] buf = new byte[5000];
-			int length = is.read(buf);
+			StringBuilder sb = new StringBuilder();
+			String message;
+	        int c;
 			
-			List<String> userList = XMLUtil.extractUserList(new String(buf, 0, length));
+	        while ((c = is.read()) != 255) {
+	        	sb.append((char)c);
+	        }
+	        message = sb.toString();
+			
+			List<String> userList = XMLUtil.extractUserList(message);
 			chatClient.updateUserList(userList);
 			
 			while (true) {
-				length = is.read(buf);
-				String message1 = new String(buf, 0, length);
-				length = is.read(buf);
-				String message2 = new String(buf, 0, length);
 				
-				String message = message1 + message2;
-				System.out.println("message :" + message);
-//				MessageType messageType = XMLUtil.extractType(message);
-				MessageType messageType = MessageType.LOGIN;
+				sb = new StringBuilder();
+				
+				while ((c = is.read()) != 255) {
+		        	sb.append((char)c);
+		        }
+				
+				message = sb.toString();
+				
+				MessageType messageType = XMLUtil.extractType(message);
 				
 				switch (messageType) {
 					case USER_LIST:
 						userList = XMLUtil.extractUserList(message);
 						chatClient.updateUserList(userList);
 						break;
+					case USER_MESSAGE:
+						chatClient.addMessage(XMLUtil.extractContent(message));
+						break;
 					default:
-						chatClient.addMessage(message);
+						
 				}
 				
 				
@@ -104,6 +108,7 @@ public class ClientConnection extends Thread {
 		try {
 			OutputStream os = socket.getOutputStream();
 			os.write(message.getBytes());
+			os.write(255); // end of message
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -28,7 +28,6 @@ public class ClientHandler extends Thread {
 		this.socket = socket;
 		this.messageHandler = messageHandler;
 		
-		
 	}
 	
 	
@@ -40,41 +39,49 @@ public class ClientHandler extends Thread {
 		
 		try {
 			InputStream is = socket.getInputStream();
+			StringBuilder sb = new StringBuilder();
+			String message;
+	        int c;
 			
-			byte[] buf = new byte[5000];
-			int length = is.read(buf);
-			
-			String loginXML = new String(buf, 0, length); 
-			
-			username = XMLUtil.extractUsername(loginXML);
+	        while ((c = is.read()) != 255) {
+	        	sb.append((char)c);
+	        }
+	        
+	        message = sb.toString();
+			username = XMLUtil.extractUsername(message);
 			messageHandler.addClientHandler(this);
 			
 			while (true) {
-//				length = is.read(buf);
-//				String message1 = new String(buf, 0, length);
-				length = is.read(buf);
-				String message2 = new String(buf, 0, length);
 				
-				String message = message2;
+				sb = new StringBuilder();
+		        while ((c = is.read()) != 255) {
+		        	sb.append((char)c);
+		        }
+		        message = sb.toString();
+				
 				messageHandler.addMessage(message);
 			}
 			
 		} catch (IOException e) {
-			this.messageHandler.removeClientHandler(this);
-			System.out.println("User logout!");;
+			this.messageHandler.removeClientHandler(this); // user disconnect
+			return;
 		}
 
 		
 	}
 
 
+	/**
+	 * Send message to client
+	 * @param message message to send
+	 */
 	public void sendMessage(String message) {
 		
 		try {
 			OutputStream os = socket.getOutputStream();
 			os.write(message.getBytes());
+			os.write(255); // end of message
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
