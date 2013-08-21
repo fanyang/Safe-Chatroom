@@ -39,7 +39,6 @@ public class ServerConnection extends Thread {
 			serverSocket = createSecureServerSocket(this.port);
 			this.server.setRunningState();
 		} catch(Exception ex) {
-			ex.printStackTrace();
 			JOptionPane.showMessageDialog(this.server, "Port already in use!", "ERROR", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
