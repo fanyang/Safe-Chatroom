@@ -1,9 +1,9 @@
-package chatroom.server;
+package myproject.chatroom.server;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import chatroom.util.XMLUtil;
+import myproject.chatroom.util.XMLUtil;
 
 /**
  * Message Broadcasting class

@@ -1,4 +1,4 @@
-package chatroom.util;
+package myproject.chatroom.util;
 
 
 import static org.junit.Assert.*;
@@ -6,6 +6,9 @@ import static org.hamcrest.CoreMatchers.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import myproject.chatroom.util.MessageType;
+import myproject.chatroom.util.XMLUtil;
 
 import org.junit.*;
 

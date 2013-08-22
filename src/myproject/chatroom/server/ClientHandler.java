@@ -1,9 +1,9 @@
-package chatroom.server;
+package myproject.chatroom.server;
 
 import java.io.*;
 import java.net.Socket;
 
-import chatroom.util.XMLUtil;
+import myproject.chatroom.util.XMLUtil;
 
 
 /**

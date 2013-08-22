@@ -1,4 +1,4 @@
-package chatroom.client;
+package myproject.chatroom.client;
 
 import java.io.*;
 import java.net.Socket;
@@ -8,8 +8,8 @@ import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
 import javax.swing.JOptionPane;
 
-import chatroom.util.MessageType;
-import chatroom.util.XMLUtil;
+import myproject.chatroom.util.MessageType;
+import myproject.chatroom.util.XMLUtil;
 
 public class ClientConnection extends Thread {
 	

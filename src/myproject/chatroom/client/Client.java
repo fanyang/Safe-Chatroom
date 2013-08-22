@@ -1,4 +1,4 @@
-package chatroom.client;
+package myproject.chatroom.client;
 
 
 import java.awt.event.ActionEvent;

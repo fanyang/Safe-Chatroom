@@ -1,4 +1,4 @@
-package chatroom.server;
+package myproject.chatroom.server;
 
 import java.awt.*;
 import java.awt.event.*;

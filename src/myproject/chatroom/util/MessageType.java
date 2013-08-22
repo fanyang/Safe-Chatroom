@@ -1,4 +1,4 @@
-package chatroom.util;
+package myproject.chatroom.util;
 
 public enum MessageType {
 	

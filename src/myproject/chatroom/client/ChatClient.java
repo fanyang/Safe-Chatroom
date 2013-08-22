@@ -1,4 +1,4 @@
-package chatroom.client;
+package myproject.chatroom.client;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.swing.*;
 
-import chatroom.util.XMLUtil;
+import myproject.chatroom.util.XMLUtil;
 
 @SuppressWarnings("serial")
 public class ChatClient extends JFrame {

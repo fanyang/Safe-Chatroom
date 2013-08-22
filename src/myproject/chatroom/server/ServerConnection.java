@@ -1,4 +1,4 @@
-package chatroom.server;
+package myproject.chatroom.server;
 
 import java.io.FileInputStream;
 import java.io.IOException;
