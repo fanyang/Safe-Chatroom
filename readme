@@ -1,4 +1,4 @@
-A very secure chatroom.
+A safe and well-structured Client-Server GUI chat room.
 
 Generate server keystore:
 keytool -genkey -v -alias ssl-chatroom-server -keyalg RSA -keystore ./server_ks -dname "CN=localhost,OU=cn,O=cn,L=cn,ST=cn,C=cn" -storepass server456 -keypass def456

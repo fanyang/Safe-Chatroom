@@ -37,28 +37,16 @@ public class ClientHandler extends Thread {
 	@Override
 	public void run() {
 		
-		try {
-			InputStream is = socket.getInputStream();
-			StringBuilder sb = new StringBuilder();
-			String message;
-	        int c;
+		try(InputStream is = socket.getInputStream();
+			) {
 			
-	        while ((c = is.read()) != 255) {
-	        	sb.append((char)c);
-	        }
+	        String message = takeMessage(is);
 	        
-	        message = sb.toString();
 			username = XMLUtil.extractUsername(message);
 			messageHandler.addClientHandler(this);
 			
 			while (true) {
-				
-				sb = new StringBuilder();
-		        while ((c = is.read()) != 255) {
-		        	sb.append((char)c);
-		        }
-		        message = sb.toString();
-				
+		        message = takeMessage(is);
 				messageHandler.addMessage(message);
 			}
 			
@@ -68,6 +56,17 @@ public class ClientHandler extends Thread {
 		}
 
 		
+	}
+
+
+	private String takeMessage(InputStream is) throws IOException {
+		StringBuilder sb = new StringBuilder("");
+		int c;
+		while ((c = is.read()) != 255) {
+			sb.append((char)c);
+		}
+		
+		return sb.toString();
 	}
 
 

@@ -43,29 +43,17 @@ public class ClientConnection extends Thread {
 		
 		sendMessage(XMLUtil.constructLoginXML(username));
 		
-		try {
-			InputStream is = socket.getInputStream();
-			StringBuilder sb = new StringBuilder();
-			String message;
-	        int c;
+		try(InputStream is = socket.getInputStream();
+				) {
 			
-	        while ((c = is.read()) != 255) {
-	        	sb.append((char)c);
-	        }
-	        message = sb.toString();
+			String message = takeMessage(is);
 			
 			List<String> userList = XMLUtil.extractUserList(message);
 			chatClient.updateUserList(userList);
 			
 			while (true) {
 				
-				sb = new StringBuilder();
-				
-				while ((c = is.read()) != 255) {
-		        	sb.append((char)c);
-		        }
-				
-				message = sb.toString();
+				message = takeMessage(is);
 				
 				MessageType messageType = XMLUtil.extractType(message);
 				
@@ -92,17 +80,30 @@ public class ClientConnection extends Thread {
 	}
 
 
+	private String takeMessage(InputStream is) throws IOException {
+		StringBuilder sb = new StringBuilder("");
+		int c;
+		
+		while ((c = is.read()) != 255) {
+			sb.append((char)c);
+		}
+		
+		return sb.toString();
+	}
+
+
 	private Socket createSecureSocket(String host, int port) throws Exception {
 		
 		String CLIENT_KEY_STORE = "keystore/client_ks";
 		System.setProperty("javax.net.ssl.trustStore", CLIENT_KEY_STORE);
-//		System.setProperty("javax.net.debug", "ssl,handshake");  //for debug
+		System.setProperty("javax.net.debug", "ssl,handshake");  //for debug
 		
 		SocketFactory sf = SSLSocketFactory.getDefault();  
 		Socket socket = sf.createSocket(host, port);
         return socket; 
         
 	}
+	
 	
 	public void sendMessage(String message) {
 		try {

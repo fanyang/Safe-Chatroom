@@ -1,7 +1,7 @@
 package myproject.chatroom.server;
 
 import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 
 import myproject.chatroom.util.XMLUtil;
 
@@ -13,15 +13,15 @@ import myproject.chatroom.util.XMLUtil;
 public class MessageHandler extends Thread{
 
 	private LinkedBlockingQueue<String> messageQueue;
-	private LinkedBlockingQueue<ClientHandler> clientHandlers;
+	private CopyOnWriteArrayList<ClientHandler> clientHandlers;
 	private Server server;
 	
 	/**
 	 * Create a new MessageHandlerThread
 	 */
 	public MessageHandler(Server server) {
-		this.messageQueue = new LinkedBlockingQueue<String>();
-		this.clientHandlers = new LinkedBlockingQueue<ClientHandler>();
+		this.messageQueue = new LinkedBlockingQueue<>();
+		this.clientHandlers = new CopyOnWriteArrayList<>();
 		this.server = server;
 	}
 	

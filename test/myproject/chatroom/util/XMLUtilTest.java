@@ -35,7 +35,7 @@ public class XMLUtilTest
 	@Test
 	public void testExtractType() {
 		
-		List<String> users = new ArrayList<String>();
+		List<String> users = new ArrayList<>();
 		users.add("Alice");
 		users.add("Bob");
 		

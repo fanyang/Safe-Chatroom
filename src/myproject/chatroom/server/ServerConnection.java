@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 
 /**
  * This class must be a thread otherwise the UI will be hold.
- * @author think
+ * @author Fan Yang
  *
  */
 public class ServerConnection extends Thread {
