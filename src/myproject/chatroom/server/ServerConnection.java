@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.KeyStore;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -46,10 +48,11 @@ public class ServerConnection extends Thread {
 		MessageHandler messageHandler = new MessageHandler(this.server);
 		messageHandler.start();
 
+		ExecutorService es = Executors.newCachedThreadPool();
 		while (true) {
 			try {
 				Socket socket = serverSocket.accept();
-				new ClientHandler(socket, messageHandler).start();
+				es.execute(new ClientHandler(socket, messageHandler));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

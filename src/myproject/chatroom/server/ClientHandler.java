@@ -11,7 +11,7 @@ import myproject.chatroom.util.XMLUtil;
  * @author Fan Yang
  *
  */
-public class ClientHandler extends Thread {
+public class ClientHandler implements Runnable {
 	
 	private Socket socket;
 	private MessageHandler messageHandler;
